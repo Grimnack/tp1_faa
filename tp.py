@@ -42,6 +42,10 @@ x1[0,:] = z
 
 ############# MESURE DE PERF #############
 
+def mesureAbs(x1,y,teta,N=100) :
+    vecteur = y - np.dot(x1.T,teta)
+    return np.sum(np.absolute(vecteur))/N
+
 def mesureNormal2(x1,y,teta,N=100):
     vecteur = y - np.dot(x1.T,teta)
     return np.dot(vecteur.T, vecteur)/N
@@ -58,7 +62,7 @@ def mesureNormalinf(x1,y,teta,N=100):
 
 ################# SCRIPT #################
 
-# print "ABS = ", mesureAbs(x1,position,teta)
+print "ABS = ", mesureAbs(x1,position,teta)
 print "JL1 = ", mesureNormal1(x1,position,teta)
 print "JL2 = ", mesureNormal2(x1,position,teta)
 print "JLINF = ", mesureNormalinf(x1,position,teta)
