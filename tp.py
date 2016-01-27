@@ -60,15 +60,40 @@ def mesureNormalinf(x1,y,teta,N=100):
     return np.amax(np.absolute(vecteur))
 
 
+def moindresCarres(matrix, vecteur):
+    gauche = np.dot(matrix, matrix.T)
+    droite = np.dot(matrix,vecteur) 
+    return  np.dot(np.linalg.inv(gauche),droite)
+
+
+
 ################# SCRIPT #################
 
+
+print "les erreurs pour y = 2*x + b"
 print "ABS = ", mesureAbs(x1,position,teta)
 print "JL1 = ", mesureNormal1(x1,position,teta)
 print "JL2 = ", mesureNormal2(x1,position,teta)
 print "JLINF = ", mesureNormalinf(x1,position,teta)
+resMoindreCarres = moindresCarres(x1,position)
+print "moindresCarres = ", resMoindreCarres
+nouveauY = resMoindreCarres[1]*x + resMoindreCarres[0]
+print "les erreurs après moindres carres"
+print "ABS = ", mesureAbs(x1,position,resMoindreCarres)
+print "JL1 = ", mesureNormal1(x1,position,resMoindreCarres)
+print "JL2 = ", mesureNormal2(x1,position,resMoindreCarres)
+print "JLINF = ", mesureNormalinf(x1,position,resMoindreCarres)
+print 'la différence des deux ensembles'
+print "ABS = ", mesureAbs(x1,position,teta) - mesureAbs(x1,position,resMoindreCarres)
+print "JL1 = ", mesureNormal1(x1,position,teta) - mesureNormal1(x1,position,resMoindreCarres)
+print "JL2 = ", mesureNormal2(x1,position,teta) - mesureNormal2(x1,position,resMoindreCarres)
+print "JLINF = ", mesureNormalinf(x1,position,teta) - mesureNormalinf(x1,position,resMoindreCarres)
+
 
 plt.plot(temps,position,'.')
-plt.plot(x,y)
+line1, = plt.plot(x,y, label='y')
+line2, = plt.plot(x,nouveauY,label='y modif')
+plt.legend(handles = [line1,line2])
 
 plt.xlabel('temps (s)')
 plt.ylabel('position (m)')
